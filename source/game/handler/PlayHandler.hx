@@ -26,6 +26,17 @@ class PlayHandler extends FlaxenHandler
 
 	override public function start(_)
 	{
+		initSystems();
+		initEntities();
+	}
+
+	private function initSystems()
+	{
+		f.addSystem(new game.system.TimerSystem(f));
+	}
+
+	private function initEntities()
+	{
 		var bgLayer = new Layer(100);
 		f.newEntity().add(new Image("art/main.png")).add(Position.zero()).add(bgLayer);
 		f.newEntity().add(new Image("art/timer.png")).add(new Position(0, 480)).add(bgLayer);
