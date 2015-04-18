@@ -57,7 +57,9 @@ class PlayHandler extends FlaxenHandler
 			.add(new Timer(120));
 
 		for(i in 0...30)
-			trace(game.Naming.getName());
+			trace(game.Naming.getWeaponName());
+		for(i in 0...30)
+			trace(game.Naming.getResearcherName());
 	}
 
 	override public function update(_)

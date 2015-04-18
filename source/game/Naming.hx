@@ -7,9 +7,15 @@ import flaxen.util.StringUtil;
 
 class Naming
 {
-	public static function getName(): String
+	public static function getWeaponName(): String
 	{
-		var result = resolve("format");
+		var result = resolve("weapon");
+		return StringUtil.toInitCase(result);		
+	}
+
+	public static function getResearcherName(): String
+	{
+		var result = resolve("researcher");
 		return StringUtil.toInitCase(result);		
 	}
 
@@ -36,7 +42,11 @@ class Naming
 	}
 
 
-	public static var data:NameData = {
+	public static var data:Dynamic = {
+		weapon: [
+			"[adjective] [item]"
+		],
+
 		food: [
 			"tomato/tomatoes",
 			"banana",
@@ -144,20 +154,48 @@ class Naming
 			"car"	
 		],	
 
-		format: [
-			"[adjective] [item]"
+		researcher: [
+			"[title] [name]",
+			"[title] [surname]",
+			"[name]",
+			"[name]"
+		],
+
+		name: [
+			"[firstname] [surname]",
+			"[firstname] [initial] [surname]",
+			"[initial] [surname]",
+		],
+
+		title: [
+			"Doctor",
+			"Doctor",
+			"Dr.",
+			"Dr.",
+			"Professor",
+			"Professor",
+			"Mr.",
+			"Mr.",
+			"Sir"
+		],
+
+		firstname: [
+			"Joseph", "Franz", "Karl", "Isaac", "Albert", "Maxwell", "Charles", "Alfred", 
+			"Michael", "Eric", "Marie", "Rosalind", "Ada", "Lise", "Barbara", "Gertrude", "Jocelyn"
+		],
+
+		surname: [
+			"Curie", "Franklin", "Lovelace", "Meitner", "McClintock", "Carson", "Lund",
+			"Einstein", "Newton", "Born", "Nobel", "Kepler", "Faraday", "[superlative]"
+		],
+
+		superlative: [
+			"Amazing", "Fantastic", "Incredible", "Jazzpants"
+		],
+
+		initial: [ 
+			"A.", "B.", "C.", "D.", "E.", "J.", "G.", "H.", "I.", "J.", "K.", "L.", "M.", "N.", 
+			"O.", "P.", "Q.", "R.", "S.", "T.", "U.", "V.", "W.", "X.", "Y.", "Z.", 		
 		]
 	};	
-}
-
-typedef NameData =
-{
-	var food:Array<String>;
-	var bodypart:Array<String>;
-	var good:Array<String>;
-	var element:Array<String>;
-	var item:Array<String>;
-	var asset:Array<String>;
-	var adjective:Array<String>;
-	var format:Array<String>;
 }
