@@ -40,13 +40,21 @@ class PlayHandler extends FlaxenHandler
 		var bgLayer = new Layer(100);
 		f.newEntity().add(new Image("art/main.png")).add(Position.zero()).add(bgLayer);
 		f.newEntity().add(new Image("art/timer.png")).add(new Position(0, 480)).add(bgLayer);
-		f.newSingleton("timer")
-			.add(new Timer(120))
-			.add(new Text("2:00"))
-			.add(new Position(61, 540))
+
+
+		f.newComponentSet("timer")
 			.add(new Image("art/font-digits.png"))
-			.add(TextStyle.createBitmap(false, Center, Center, 0, 2, 0, "0", false, "0123456789:"))
+			.add(TextStyle.createBitmap(false, Right, Center, 0, 0, 0, 23, true, "0123456789:"))
 			.add(new Layer(20));
+		for(val in [
+			{text:"2", x:50, id:"timer-min" }, 
+			{text:"00", x:100, id:"timer-sec" },
+			{text:":", x:69, id:"timer-colon"} ])
+				f.newSetSingleton("timer", val.id)
+					.add(new Text(val.text))
+					.add(new Position(val.x, 540));
+		f.newSingleton("timer")
+			.add(new Timer(120));
 	}
 
 	override public function update(_)

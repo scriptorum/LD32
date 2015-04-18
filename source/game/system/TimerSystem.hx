@@ -19,30 +19,19 @@ class TimerSystem extends FlaxenSystem
 		for(node in f.ash.getNodeList(TimerNode))
 		{
 			node.timer.value -= ms;
-			node.text.message = formatTime(node.timer.value);
+			var t = Math.ceil(node.timer.value);
+			var sec = t - Math.floor(t/60) * 60;
+			var min = Math.floor((t - sec) / 60);
+			f.demandComponent("timer-sec", Text).message = (sec < 10 ? '0$sec' : cast sec);
+			f.demandComponent("timer-min", Text).message = cast min;
+
 			if(node.timer.value < 0)
 				node.timer.value = 0; // TO DO Game over
 		}
-	}
-
-	public function formatTime(t:Float): String
-	{
-		var sec:Int = Math.floor(t);
-		var min:Int = 0;
-		while(sec > 59)
-		{
-			sec -= 60;
-			min++;
-		}
-
-		if(sec < 10)
-			return '$min:0$sec';
-		return '$min:$sec';
 	}
 }
 
 class TimerNode extends Node<TimerNode>
 {
 	public var timer:Timer;
-	public var text:Text;
 }
