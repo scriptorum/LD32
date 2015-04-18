@@ -55,6 +55,9 @@ class PlayHandler extends FlaxenHandler
 					.add(new Position(val.x, 540));
 		f.newSingleton("timer")
 			.add(new Timer(120));
+
+		for(i in 0...30)
+			trace(game.Naming.getName());
 	}
 
 	override public function update(_)
