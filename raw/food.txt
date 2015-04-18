@@ -1,0 +1,10 @@
+tomato/tomatoes
+banana
+milk/-
+pork chop
+peanut butter/-
+watermelon
+oatmeal/-
+coffee/-
+asparagus
+burger

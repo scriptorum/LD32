@@ -1,0 +1,7 @@
+acid
+fire
+lava
+poison
+smoke
+ice
+poop

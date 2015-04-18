@@ -1,0 +1,10 @@
+chair
+sofa
+toaster
+microwave
+bucket
+sink
+umbrella
+spoon
+pencil
+toilet

@@ -1,0 +1,21 @@
+tank
+plane
+jet
+machine gun
+assault rifle
+rifle
+sidearm
+pistol
+bayonet
+artillery
+mortar
+battleship
+satellite
+launcher
+bomb
+missile
+balloon
+zeppelin
+bullet
+dart
+car

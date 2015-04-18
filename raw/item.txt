@@ -1,0 +1,3 @@
+[good]
+[asset]
+[food]
