@@ -1,3 +1,11 @@
+/*
+ KNOWN:
+ 	- There's some order of events that causes a worker to not complete its return when aborted and therefore
+ 	  the player is stiffed 10 knowledge.
+ 	- How do I track the research pool again?
+*/
+
+
 package game.handler; 
 
 import com.haxepunk.utils.Key;
@@ -185,6 +193,7 @@ class PlayHandler extends FlaxenHandler
 					.add(new PlaceRecruitIntent(cell.x, cell.y));
 				f.removeMarker("place-recruit");
 			}
+			else f.newMarker("abort");
 		}
 
 		else if(f.isPressed("button-recruit"))
