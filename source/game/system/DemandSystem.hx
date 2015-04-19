@@ -32,8 +32,6 @@ class DemandSystem extends FlaxenSystem
 	{
 		var demands:Array<String> = f.demandComponent("demandQueue", DemandQueue).demands;
 
-		// TODO check for recruit rewards, add them to queue regardless of demands length
-
 		while(demands.length < 3)
 			addDemand(demands);
 	}
