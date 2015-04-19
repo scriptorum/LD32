@@ -1,6 +1,7 @@
 
 <?xml version="1.0" encoding="utf-8"?>
 <project>
+    <set name="openfl-legacy" />
     <haxelib name="openfl" />
     <haxelib name="ash" />
     <haxelib name="HaxePunk" />
@@ -24,8 +25,6 @@
     <meta title="LD32" company="Inscrutable Games" />
     <app file="LD32" path="Export" main="game.Main" swf-version="11.2"/>
     <app preloader="inscrutablegames.Preloader" if="flash"/>
-    <!--<haxedef name="hybrid"/>-->
-
     <haxeflag name="--no-traces" unless="debug" if="flash"/>
 
     <window resizable="true" background="0x000000" orientation="landscape"/>

@@ -1,11 +1,12 @@
 package game.handler; 
 
 import com.haxepunk.utils.Key;
+import flaxen.common.TextAlign;
 import flaxen.component.Alpha;
 import flaxen.component.Image;
-import game.component.Knowledge;
 import flaxen.component.Layer;
 import flaxen.component.Offset;
+import flaxen.component.Origin;
 import flaxen.component.Position;
 import flaxen.component.Scale;
 import flaxen.component.Size;
@@ -13,9 +14,9 @@ import flaxen.component.Text;
 import flaxen.core.Flaxen;
 import flaxen.core.FlaxenHandler;
 import flaxen.core.Log;
-import flaxen.common.TextAlign;
 import flaxen.service.InputService;
 import game.component.DemandQueue;
+import game.component.Knowledge;
 import game.component.PlaceRecruitIntent;
 import game.component.Timer;
 
@@ -72,6 +73,7 @@ class PlayHandler extends FlaxenHandler
 
 		f.newComponentSet("researcher")
 			.addSet(backLayer)
+			.add(Origin.center())
 			.addClass(Position, [28, 136]);
 	}
 
@@ -118,7 +120,7 @@ class PlayHandler extends FlaxenHandler
 			.add(new Position(22, 38));
 		f.newSetSingleton("midLayer", "knowledge")
 			.add(new Text("000"))
-			.add(new Knowledge(0))
+			.add(new Knowledge(30))
 			.add(new Image("art/font-book.png"))
 			.add(TextStyle.createBitmap(false, Center, Center, 0, 0, 0, "0", false, "0123456789"))
 			.add(new Position(60, 57));
