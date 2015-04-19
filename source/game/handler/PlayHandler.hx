@@ -213,11 +213,7 @@ class PlayHandler extends FlaxenHandler
 		{		
 			var cell = f.getMouseCell("board", 8, 8);
 			if(cell != null)
-			{
-				f.newEntity()
-					.add(new PlaceRecruitIntent(cell.x, cell.y));
-				f.removeMarker("place-recruit");
-			}
+				f.newEntity().add(new PlaceRecruitIntent(cell.x, cell.y));
 			else f.newMarker("abort");
 		}
 

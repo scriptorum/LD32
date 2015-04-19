@@ -10,6 +10,7 @@ import flaxen.component.Scale;
 import flaxen.core.Flaxen;
 import game.component.Research;
 import game.system.GameSystem;
+import game.node.WorkerNode;
 import game.component.ActivateCellIntent;
 import game.component.Worker;
 
@@ -101,25 +102,20 @@ class WorkSystem extends GameSystem
 			target = 360; // Hack to keep a clockwise rotation
 
 		// Rotate worker
-		var tween = f.newTween(workerNode.rotation, { angle:target }, 0.5, Easing.easeInQuad);
+		var rotation = workerNode.entity.get(Rotation);
+		var tween = f.newTween(rotation, { angle:target }, 0.5, Easing.easeInQuad);
 
 		// Hack to covert 360 back to 0 angle, so we continue clockwise
 		if(target == 360)
 			f.newActionQueue()
 				.waitForProperty(tween, "complete", true)
-				.setProperty(workerNode.rotation, "angle", 0);
+				.setProperty(rotation, "angle", 0);
 	}
 }
 
 class ActivateCellNode extends Node<ActivateCellNode>
 {
 	public var intent:ActivateCellIntent;
-}
-
-class WorkerNode extends Node<WorkerNode>
-{
-	public var worker:Worker;
-	public var rotation:Rotation;
 }
 
 class ResearchNode extends Node<ResearchNode>

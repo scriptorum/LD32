@@ -9,6 +9,7 @@ import flaxen.component.Invisible;
 import flaxen.component.Position;
 import flaxen.component.Text;
 import flaxen.core.Flaxen;
+import game.node.WorkerNode;
 import game.system.GameSystem;
 import flaxen.service.InputService;
 import game.component.Knowledge;
@@ -41,31 +42,51 @@ class RecruitSystem extends GameSystem
 				checkKnowledge(node.knowledge);
 		}
 
+		// Clicked on an empty space while holding a worker
 		for(node in f.ash.getNodeList(PlaceRecruitIntentNode))
 		{
+			f.ash.removeEntity(node.entity); // remove intent entity holder
 			var intent = node.placeRecruitIntent;
-			f.ash.removeEntity(node.entity);
-			var boardPos = f.demandEntity("board").get(Position);
-			var recruitEnt = f.demandEntity("nextRecruit");
-			recruitEnt.name = f.getEntityName("worker"); // They're no longer next recruit
-			onRecruitEvent(knowledge);
-			var x = intent.x * 55 + boardPos.x;
-			var y = intent.y * 55 + boardPos.y;
-			var tween = f.newTween(recruitEnt.get(Position), { x:x, y:y }, 0.6, Easing.easeOutQuad);
-			f.newActionQueue()
-				.waitForProperty(tween, "complete", true)
-				.addCallback(function() { 
-					f.removeMarker("place-recruit");
-				});
-				// .removeComponent(f.demandEntity("shadowRecruit"), Invisible);
 
-			// Mark Worker component as "deployed"
-			var worker = recruitEnt.get(Worker);
-			worker.x = intent.x;
-			worker.y = intent.y;
-
-			// TODO auto rotate to face some research
+			// Is there a worker already there?
+			var workerNode:WorkerNode = null;
+			for(innerNode in f.ash.getNodeList(WorkerNode))
+				if(innerNode.worker.x == intent.x && innerNode.worker.y == intent.y)
+					workerNode = innerNode;
+			if(workerNode == null)
+			{
+				f.removeMarker("place-recruit");
+				onDeployWorker(intent, knowledge);
+				continue;
+			}
+			else
+			{
+				// SFX
+			}
 		}
+	}
+
+	public function onDeployWorker(intent:PlaceRecruitIntent, knowledge:Knowledge)
+	{
+		var boardPos = f.demandEntity("board").get(Position);
+		var recruitEnt = f.demandEntity("nextRecruit");
+		recruitEnt.name = f.getEntityName("worker"); // They're no longer next recruit
+		onRecruitEvent(knowledge);
+		var x = intent.x * 55 + boardPos.x;
+		var y = intent.y * 55 + boardPos.y;
+		var tween = f.newTween(recruitEnt.get(Position), { x:x, y:y }, 0.6, Easing.easeOutQuad);
+		f.newActionQueue()
+			.waitForProperty(tween, "complete", true)
+			.addCallback(function() { 
+				f.removeMarker("place-recruit");
+			});
+
+		// Mark Worker component as "deployed"
+		var worker = recruitEnt.get(Worker);
+		worker.x = intent.x;
+		worker.y = intent.y;
+
+		// TODO auto rotate to face some research	
 	}
 
 	// Recruit button clicked on
