@@ -7,6 +7,8 @@ class Worker
 	public var x:Int;
 	public var y:Int;
 	public var rotation:Int; // 0-3
+	public var level:Int = 1;
+	public var research:Research = null;
 
 	public function new(name:String, type:WorkerType)
 	{

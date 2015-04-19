@@ -20,6 +20,7 @@
 	  another consequence by having unplaced research destroyed, either dinging the timer, or leaving
 	  a stack of papers which permanently blocks the board, or can only be removed by assigning workers to 
 	  it "busy work."
+	 - It's possible to recruit workers who are then unclickable
 */
 
 
@@ -102,7 +103,7 @@ class PlayHandler extends FlaxenHandler
 			.addSet(midLayer);
 
 		f.newComponentSet("worker")
-			.addSet(backLayer)
+			.addSet(midLayer)
 			.add(Origin.center())
 			.addClass(Rotation, [0])
 			.addClass(Position, [28, 136]);
@@ -111,17 +112,19 @@ class PlayHandler extends FlaxenHandler
 			.add(Origin.center())
 			.addClass(Rotation, [-15])
 			.addClass(Position, [-55, 230])
-			.addClass(Scale, [0.5, 0.5]);
+			.addClass(Scale, [0.5, 0.5])
+			.add(backLayer);
 	}
 
 	private function initSystems()
 	{
 		f.addSystem(new game.system.RecruitSystem(f));
 		f.addSystem(new game.system.KnowledgeSystem(f));
-		f.addSystem(new game.system.WorkSystem(f));
+		f.addSystem(new game.system.ActivationSystem(f));
 		f.addSystem(new game.system.ResearchQueueSystem(f));
 		f.addSystem(new game.system.DemandSystem(f));
 		f.addSystem(new game.system.TimerSystem(f));
+		f.addSystem(new game.system.WorkSystem(f));
 		f.addSystem(new game.system.StatusBarSystem(f));
 	}
 

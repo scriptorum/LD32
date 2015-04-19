@@ -60,14 +60,15 @@ class ResearchQueueSystem extends GameSystem
 	{
 		if(flask > 2)
 			throw 'Cannot tween to flask $flask';
+		var speed = 0.4;
 		var data = flaskData[flask];
 		var aq = e.get(ActionQueue);
 		var tween:Tween = null;
 		aq.addCallback(function()
 		{
-			tween = f.newTween(e.get(Position), { x:data.x, y:data.y }, 0.8);
-			f.newTween(e.get(Scale), { x:data.scale, y:data.scale }, 0.8);
-			f.newTween(e.get(Rotation), { angle:data.angle }, 0.8);
+			tween = f.newTween(e.get(Position), { x:data.x, y:data.y }, speed);
+			f.newTween(e.get(Scale), { x:data.scale, y:data.scale }, speed);
+			f.newTween(e.get(Rotation), { angle:data.angle }, speed);
 			aq.waitForProperty(tween, "complete", true, true); // make priority
 		});
 	}

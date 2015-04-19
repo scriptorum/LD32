@@ -10,6 +10,7 @@ import flaxen.component.Position;
 import flaxen.component.Text;
 import flaxen.core.Flaxen;
 import game.node.WorkerNode;
+import game.node.ResearchNode;
 import game.system.GameSystem;
 import flaxen.service.InputService;
 import game.component.Knowledge;
@@ -53,16 +54,28 @@ class RecruitSystem extends GameSystem
 			for(innerNode in f.ash.getNodeList(WorkerNode))
 				if(innerNode.worker.x == intent.x && innerNode.worker.y == intent.y)
 					workerNode = innerNode;
-			if(workerNode == null)
+			if(workerNode != null)
 			{
-				f.removeMarker("place-recruit");
-				onDeployWorker(intent, knowledge);
+				setStatus("<smooch>"); // TODO random "inappropriate messages"
+				// SFX
 				continue;
 			}
-			else
+
+			// Did you click on research?
+			var researchNode:ResearchNode = null;
+			for(innerNode in f.ash.getNodeList(ResearchNode))
+				if(innerNode.research.x == intent.x && innerNode.research.y == intent.y && innerNode.research.queued == false)
+					researchNode = innerNode;
+			if(researchNode != null)
 			{
-				// SFX
+				setStatus("Find an empty cubicle!");
+				// SFX clink
+				continue;
 			}
+
+			// Okay you found an empty space
+			f.removeMarker("place-recruit");
+			onDeployWorker(intent, knowledge);
 		}
 	}
 
@@ -85,6 +98,11 @@ class RecruitSystem extends GameSystem
 		var worker = recruitEnt.get(Worker);
 		worker.x = intent.x;
 		worker.y = intent.y;
+
+
+		// THIS IS FIGHTING WITH setStatus elsewhere in this file
+		if(knowledge.amount < 0)
+			setStatus("Click on an empty space to place research there");
 
 		// TODO auto rotate to face some research	
 	}
@@ -115,7 +133,7 @@ class RecruitSystem extends GameSystem
 		{
 			if(f.hasMarker("gameStart"))
 				msg = "Recruit another researcher";
-			else msg = "Another  is available";
+			else msg = "Another researcher is available";
 		}
 		setStatus(msg);
 
