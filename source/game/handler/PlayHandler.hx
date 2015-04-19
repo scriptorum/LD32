@@ -18,6 +18,7 @@ import flaxen.service.InputService;
 import game.component.DemandQueue;
 import game.component.Knowledge;
 import game.component.PlaceRecruitIntent;
+import game.component.StatusBar;
 import game.component.Timer;
 
 class PlayHandler extends FlaxenHandler
@@ -83,6 +84,7 @@ class PlayHandler extends FlaxenHandler
 		f.addSystem(new game.system.KnowledgeSystem(f));
 		f.addSystem(new game.system.TimerSystem(f));
 		f.addSystem(new game.system.DemandSystem(f));
+		f.addSystem(new game.system.StatusBarSystem(f));
 	}
 
 	private function initEntities()
@@ -132,16 +134,20 @@ class PlayHandler extends FlaxenHandler
 			.add(new Image("art/button-recruit.png"))
 			.add(new Alpha(0.5))
 			.add(new Position(17, 219));
-		f.newSetSingleton("message", "recruit-name")
+		f.newSetSingleton("message", "recruitMessage")
 			.add(new Position(60, 200))
 			.add(new Size(120, 36))
-			.add(new Text("Earn Knowledge\nTo Recruit"));
+			.add(new Text("Go Go Go Go!"));
 
 		// Add message bar
-		f.newSetSingleton("message", "message-bar")
+		f.newSetSingleton("message", "statusBar")
 			.add(new Position(340, 475))
 			.add(new Size(440, 36))
-			.add(new Text("RECRUIT THREE RESEARCHERS TO BEGIN"));
+			.add(new Scale(1, 1))
+			.add(new StatusBar("Recruit three researchers to begin!"))
+			.add(new Text("Go Go Go Go!"));
+
+		f.newMarker("gameStart");
 
 		// for(i in 0...30)
 		// 	trace(game.Naming.getWeaponName());

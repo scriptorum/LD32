@@ -7,11 +7,13 @@ import flaxen.component.Alpha;
 import flaxen.component.Image;
 import flaxen.component.Invisible;
 import flaxen.component.Position;
+import flaxen.component.Text;
 import flaxen.core.Flaxen;
 import flaxen.core.FlaxenSystem;
 import game.component.Knowledge;
 import game.component.PlaceRecruitIntent;
 import game.component.Researcher;
+import game.component.StatusBar;
 import game.Naming;
 import game.node.KnowledgeNode;
 
@@ -28,7 +30,8 @@ class RecruitSystem extends FlaxenSystem
 		{
 			if(f.hasMarker("recruiting"))
 				recruitNow(node.knowledge);
-			else checkKnowledge(node.knowledge);
+			else if(!f.hasMarker("place-recruit"))
+				checkKnowledge(node.knowledge);
 		}
 
 		for(node in f.ash.getNodeList(PlaceRecruitIntentNode))
@@ -43,7 +46,11 @@ class RecruitSystem extends FlaxenSystem
 			var tween = f.newTween(recruitEnt.get(Position), { x:x, y:y }, 0.6, Easing.easeOutQuad);
 			f.newActionQueue()
 				.waitForProperty(tween, "complete", true)
-				.removeComponent(f.demandEntity("shadowRecruit"), Invisible);
+				.addCallback(function() { 
+					// f.demandEntity("recruitMessage").get(Text).message = "Earn Knowledge\nTo Gain Recruits!"; 
+					f.removeMarker("place-recruit");
+				});
+				// .removeComponent(f.demandEntity("shadowRecruit"), Invisible);
 
 				// Mark Researcher component as "deployed"
 		}
@@ -58,7 +65,7 @@ class RecruitSystem extends FlaxenSystem
 				throw "Knowledge dropped below 0!";
 		#end
 
-		// Set "CLICK ON SPACE TO PLACE RESEARCHER" message
+		f.demandEntity("statusBar").get(StatusBar).setMessage("Click on empty space to deploy researcher");
 		f.removeMarker("recruiting");
 		f.newMarker("place-recruit");
 		// TODO Move recruit image along with cursor
@@ -72,15 +79,16 @@ class RecruitSystem extends FlaxenSystem
 			if(f.entityExists("nextRecruit"))
 				return;
 
-			// Hide shadow recruit
-			f.demandEntity("shadowRecruit")
-				.add(Invisible.instance);
+			// // Hide shadow recruit
+			// f.demandEntity("shadowRecruit")
+			// 	.add(Invisible.instance);
 
 			// Show next researcher
 			var researcher = new Researcher(Naming.getResearcherName(), Researcher);
 			f.newSetSingleton("researcher", "nextRecruit")
 				.add(new Image("art/researcher.png"))
 				.add(researcher);
+			f.demandEntity("recruitMessage").get(Text).message = researcher.name;
 		}
 	}
 
