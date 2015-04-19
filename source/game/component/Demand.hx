@@ -7,6 +7,7 @@ class Demand
 	public var red:Int;
 	public var green:Int;
 	public var blue:Int;
+	public var resolved:Bool = false;
 
 	public function new(name:String, order:Int, red:Int, green:Int, blue:Int)
 	{

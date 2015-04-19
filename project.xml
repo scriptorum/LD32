@@ -4,7 +4,7 @@
     <haxelib name="openfl" />
     <haxelib name="ash" />
     <haxelib name="HaxePunk" />
-    <haxelib name="Flaxen" />
+    <haxelib name="flaxen" />
 
     <assets path="assets/art" rename="art" type="image" include="*.png" />
     <assets path="assets/audio" rename="sound" type="sound" include="*.wav" />
@@ -24,6 +24,7 @@
     <meta title="LD32" company="Inscrutable Games" />
     <app file="LD32" path="Export" main="game.Main" swf-version="11.2"/>
     <app preloader="inscrutablegames.Preloader" if="flash"/>
+    <!--<haxedef name="hybrid"/>-->
 
     <haxeflag name="--no-traces" unless="debug" if="flash"/>
 

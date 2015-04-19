@@ -22,8 +22,8 @@ class TimerSystem extends FlaxenSystem
 			var t = Math.ceil(node.timer.value);
 			var sec = t - Math.floor(t/60) * 60;
 			var min = Math.floor((t - sec) / 60);
-			f.demandComponent("timer-sec", Text).message = (sec < 10 ? '0$sec' : cast sec);
-			f.demandComponent("timer-min", Text).message = cast min;
+			f.demandComponent("timer-sec", Text).message = Std.string(sec < 10 ? '0$sec' : sec);
+			f.demandComponent("timer-min", Text).message = Std.string(min);
 
 			if(node.timer.value < 0)
 				node.timer.value = 0; // TO DO Game over
