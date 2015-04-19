@@ -7,12 +7,12 @@ import flaxen.common.LoopType;
 import flaxen.component.Scale;
 import flaxen.component.Text;
 import flaxen.core.Flaxen;
-import flaxen.core.FlaxenSystem;
+import game.system.GameSystem;
 import flaxen.util.ArrayUtil;
 import game.component.StatusBar;
 import game.component.Timer;
 
-class StatusBarSystem extends FlaxenSystem
+class StatusBarSystem extends GameSystem
 {
 	public var messages = [
 		"Your people only work on adjacent research they are facing",

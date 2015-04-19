@@ -4,10 +4,10 @@ import ash.core.Entity;
 import ash.core.Node;
 import flaxen.component.Text;
 import flaxen.core.Flaxen;
-import flaxen.core.FlaxenSystem;
+import game.system.GameSystem;
 import game.component.Timer;
 
-class TimerSystem extends FlaxenSystem
+class TimerSystem extends GameSystem
 {
 	public function new(f:Flaxen)
 	{

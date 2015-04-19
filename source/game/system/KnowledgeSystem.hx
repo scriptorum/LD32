@@ -3,12 +3,12 @@ package game.system;
 import ash.core.Entity;
 import flaxen.component.Text;
 import flaxen.core.Flaxen;
-import flaxen.core.FlaxenSystem;
+import game.system.GameSystem;
 import game.component.Knowledge;
 import game.Naming;
 import game.node.KnowledgeNode;
 
-class KnowledgeSystem extends FlaxenSystem
+class KnowledgeSystem extends GameSystem
 {
 	public function new(f:Flaxen)
 	{

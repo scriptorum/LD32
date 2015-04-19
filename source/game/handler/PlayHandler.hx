@@ -16,6 +16,7 @@ import flaxen.component.Layer;
 import flaxen.component.Offset;
 import flaxen.component.Origin;
 import flaxen.component.Position;
+import flaxen.component.Rotation;
 import flaxen.component.Scale;
 import flaxen.component.Size;
 import flaxen.component.Text;
@@ -26,6 +27,7 @@ import flaxen.service.InputService;
 import game.component.DemandQueue;
 import game.component.Knowledge;
 import game.component.PlaceRecruitIntent;
+import game.component.RotateWorkerIntent;
 import game.component.StatusBar;
 import game.component.Timer;
 
@@ -83,6 +85,7 @@ class PlayHandler extends FlaxenHandler
 		f.newComponentSet("researcher")
 			.addSet(backLayer)
 			.add(Origin.center())
+			.addClass(Rotation, [0])
 			.addClass(Position, [28, 136]);
 	}
 
@@ -90,8 +93,9 @@ class PlayHandler extends FlaxenHandler
 	{
 		f.addSystem(new game.system.RecruitSystem(f));
 		f.addSystem(new game.system.KnowledgeSystem(f));
-		f.addSystem(new game.system.TimerSystem(f));
+		f.addSystem(new game.system.WorkSystem(f));
 		f.addSystem(new game.system.DemandSystem(f));
+		f.addSystem(new game.system.TimerSystem(f));
 		f.addSystem(new game.system.StatusBarSystem(f));
 	}
 
@@ -183,7 +187,6 @@ class PlayHandler extends FlaxenHandler
 		if(key == Key.C)
 			f.demandComponent("knowledge", Knowledge).amount += 5;
 
-
 		if(f.hasMarker("place-recruit") && InputService.clicked)
 		{		
 			var cell = f.getMouseCell("board", 8, 8);
@@ -199,8 +202,13 @@ class PlayHandler extends FlaxenHandler
 		else if(f.isPressed("button-recruit"))
 			f.newMarker("recruiting");
 
-		// TODO 
-
+		else if(InputService.clicked)
+		{
+			var cell = f.getMouseCell("board", 8, 8);
+			if(cell != null) // rotate researcher
+				f.newEntity()
+					.add(new RotateWorkerIntent(cell.x, cell.y));
+		}
 
 		InputService.clearLastKey();
 	}

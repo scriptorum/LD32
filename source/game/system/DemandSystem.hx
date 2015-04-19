@@ -13,13 +13,13 @@ import flaxen.component.Size;
 import flaxen.component.Text;
 import flaxen.common.TextAlign;
 import flaxen.core.Flaxen;
-import flaxen.core.FlaxenSystem;
+import game.system.GameSystem;
 import flaxen.util.MathUtil;
 import game.component.Demand;
 import game.component.DemandQueue;
 import game.Naming;
 
-class DemandSystem extends FlaxenSystem
+class DemandSystem extends GameSystem
 {
 	public var totalDemands:Int = 0;
 

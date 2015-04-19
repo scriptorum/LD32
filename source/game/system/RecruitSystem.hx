@@ -9,7 +9,7 @@ import flaxen.component.Invisible;
 import flaxen.component.Position;
 import flaxen.component.Text;
 import flaxen.core.Flaxen;
-import flaxen.core.FlaxenSystem;
+import game.system.GameSystem;
 import flaxen.service.InputService;
 import game.component.Knowledge;
 import game.component.PlaceRecruitIntent;
@@ -18,7 +18,7 @@ import game.component.StatusBar;
 import game.Naming;
 import game.node.KnowledgeNode;
 
-class RecruitSystem extends FlaxenSystem
+class RecruitSystem extends GameSystem
 {
 	public static var EARN_KNOWLEDGE:String = "Earn Knowledge To Gain More Recruits!";
 
@@ -59,7 +59,12 @@ class RecruitSystem extends FlaxenSystem
 				});
 				// .removeComponent(f.demandEntity("shadowRecruit"), Invisible);
 
-				// Mark Researcher component as "deployed"
+			// Mark Researcher component as "deployed"
+			var worker = recruitEnt.get(Researcher);
+			worker.x = intent.x;
+			worker.y = intent.y;
+
+			// TODO auto rotate to face some research
 		}
 	}
 
@@ -78,9 +83,7 @@ class RecruitSystem extends FlaxenSystem
 		f.removeMarker("recruiting");
 		f.newMarker("place-recruit");
 
-		setRecruitmentMessage(knowledge.amount >= 10
-			? "Hiring researcher"
-			: EARN_KNOWLEDGE); 
+		setRecruitmentMessage(knowledge.amount >= 10 ? "Hiring researcher": EARN_KNOWLEDGE);
 	}
 
 	// Updated the status bar, after placing a researcher, or aborting placement
@@ -97,11 +100,6 @@ class RecruitSystem extends FlaxenSystem
 
 		var researcher = f.getComponent("nextRecruit", Researcher);
 		setRecruitmentMessage(researcher == null ? EARN_KNOWLEDGE : researcher.name);
-	}
-
-	public function setStatus(message:String)
-	{
-		f.demandEntity("statusBar").get(StatusBar).setMessage(message);
 	}
 
 	public function updatePlacement(knowledge:Knowledge)
@@ -148,11 +146,6 @@ class RecruitSystem extends FlaxenSystem
 				.add(researcher);
 			setRecruitmentMessage(researcher.name);
 		}
-	}
-
-	public function setRecruitmentMessage(message:String)
-	{
-		f.demandEntity("recruitMessage").get(Text).message = message;
 	}
 
 	public function enableRecruitButton(enabled:Bool)
