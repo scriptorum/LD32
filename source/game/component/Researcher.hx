@@ -12,4 +12,4 @@ class Researcher
 	}
 }
 
-enum ResearcherType { Researcher; RedSpecialist; GreenSpecialist; BlueSpecialist; Assistant }
+enum ResearcherType { Researcher; RedSpecialist; GreenSpecialist; BlueSpecialist; Assistant; }
