@@ -3,6 +3,7 @@ package game.system;
 import flaxen.component.Text;
 import flaxen.core.Flaxen;
 import flaxen.core.FlaxenSystem;
+import game.component.ResearchQueue;
 import game.component.StatusBar;
 import game.node.KnowledgeNode;
 
@@ -21,5 +22,10 @@ class GameSystem extends FlaxenSystem
 	public function setRecruitmentMessage(message:String)
 	{
 		f.demandEntity("recruitMessage").get(Text).message = message;
+	}
+
+	public function getResearchQueue(): Array<String>
+	{
+		return f.demandComponent("researchQueue", ResearchQueue).queue;	
 	}
 }

@@ -3,11 +3,29 @@
  	- There's some order of events that causes a worker to not complete its return when aborted and therefore
  	  the player is stiffed 10 knowledge.
  	- How do I track the research pool again?
+ 	    a) When a research box is complete it turns into a box. Click on the box to move it to a demand
+ 	       card. The necessary amounts are used by the card, and if there's any excess they go to the knowledge meter.
+ 	- How do I do promotions again?
+ 	    a) Workers should auto-promote after X research
+ 	    b) Promote button should be available after 5 knowledge
+ 	    c) Promote cost is relative to level of researcher
+ 	- You shouldn't be able to place a researcher on an existing worker. 
+ 		a) detect space is not empty and reject placement
+ 		b) disallow recruit button if no empty spaces are available
+ 	- Q: Isn't this space too big?
+ 	  A: Yes, thanks for fucking noticing. Insert some cubicles or lab equipment or something to act as blocks.
+	- Random luck: A worker may quit after a time?
+	- I'm concerned that the current scheme of letting you choose where to put a block may be too generous.
+	  Perhaps you need to place or move a dolly to and blocks are placed automatically. This could create
+	  another consequence by having unplaced research destroyed, either dinging the timer, or leaving
+	  a stack of papers which permanently blocks the board, or can only be removed by assigning workers to 
+	  it "busy work."
 */
 
 
 package game.handler; 
 
+import ash.core.Entity;
 import com.haxepunk.utils.Key;
 import flaxen.common.TextAlign;
 import flaxen.component.Alpha;
@@ -25,9 +43,10 @@ import flaxen.core.FlaxenHandler;
 import flaxen.core.Log;
 import flaxen.service.InputService;
 import game.component.DemandQueue;
+import game.component.ResearchQueue;
 import game.component.Knowledge;
 import game.component.PlaceRecruitIntent;
-import game.component.RotateWorkerIntent;
+import game.component.ActivateCellIntent;
 import game.component.StatusBar;
 import game.component.Timer;
 
@@ -82,11 +101,17 @@ class PlayHandler extends FlaxenHandler
 			.add(TextStyle.createBitmap(true, Center, Center, -2, 0, 0, 4))
 			.addSet(midLayer);
 
-		f.newComponentSet("researcher")
+		f.newComponentSet("worker")
 			.addSet(backLayer)
 			.add(Origin.center())
 			.addClass(Rotation, [0])
 			.addClass(Position, [28, 136]);
+
+		f.newComponentSet("research") // needs image and research, also shadow
+			.add(Origin.center())
+			.addClass(Rotation, [-15])
+			.addClass(Position, [-55, 230])
+			.addClass(Scale, [0.5, 0.5]);
 	}
 
 	private function initSystems()
@@ -94,6 +119,7 @@ class PlayHandler extends FlaxenHandler
 		f.addSystem(new game.system.RecruitSystem(f));
 		f.addSystem(new game.system.KnowledgeSystem(f));
 		f.addSystem(new game.system.WorkSystem(f));
+		f.addSystem(new game.system.ResearchQueueSystem(f));
 		f.addSystem(new game.system.DemandSystem(f));
 		f.addSystem(new game.system.TimerSystem(f));
 		f.addSystem(new game.system.StatusBarSystem(f));
@@ -123,9 +149,9 @@ class PlayHandler extends FlaxenHandler
 		f.newSingleton("timer")
 			.add(new Timer(120));
 
-		// Demand Queue
-		f.newSingleton("demandQueue")
-			.add(new DemandQueue());
+		// Queues
+		f.newSingleton("demandQueue").add(new DemandQueue());
+		f.newSingleton("researchQueue").add(new ResearchQueue());
 
 
 		// Knowledge meter
@@ -140,7 +166,7 @@ class PlayHandler extends FlaxenHandler
 			.add(new Position(60, 57));
 
 		// Add recruit
-		f.newSetSingleton("researcher", "shadowRecruit")
+		f.newSetSingleton("worker", "shadowRecruit")
 			.add(new Image("art/recruit-shadow.png"));
 		f.newSetSingleton("backLayer", "button-recruit")
 			.add(new Image("art/button-recruit.png"))
@@ -159,12 +185,8 @@ class PlayHandler extends FlaxenHandler
 			.add(new StatusBar("Recruit three researchers to begin!"))
 			.add(new Text("Go Go Go Go!"));
 
-		f.newMarker("gameStart");
-
-		// for(i in 0...30)
-		// 	trace(game.Naming.getWeaponName());
-		// for(i in 0...30)
-		// 	trace(game.Naming.getResearcherName());
+		f.newMarker("gameStart"); // should pause timer for now
+		f.newMarker("playing");		
 	}
 
 	override public function update(_)
@@ -205,9 +227,9 @@ class PlayHandler extends FlaxenHandler
 		else if(InputService.clicked)
 		{
 			var cell = f.getMouseCell("board", 8, 8);
-			if(cell != null) // rotate researcher
+			if(cell != null) // rotate worker
 				f.newEntity()
-					.add(new RotateWorkerIntent(cell.x, cell.y));
+					.add(new ActivateCellIntent(cell.x, cell.y));
 		}
 
 		InputService.clearLastKey();

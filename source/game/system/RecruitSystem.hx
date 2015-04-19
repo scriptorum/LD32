@@ -13,7 +13,7 @@ import game.system.GameSystem;
 import flaxen.service.InputService;
 import game.component.Knowledge;
 import game.component.PlaceRecruitIntent;
-import game.component.Researcher;
+import game.component.Worker;
 import game.component.StatusBar;
 import game.Naming;
 import game.node.KnowledgeNode;
@@ -47,7 +47,7 @@ class RecruitSystem extends GameSystem
 			f.ash.removeEntity(node.entity);
 			var boardPos = f.demandEntity("board").get(Position);
 			var recruitEnt = f.demandEntity("nextRecruit");
-			recruitEnt.name = f.getEntityName("researcher"); // They're no longer next recruit
+			recruitEnt.name = f.getEntityName("worker"); // They're no longer next recruit
 			onRecruitEvent(knowledge);
 			var x = intent.x * 55 + boardPos.x;
 			var y = intent.y * 55 + boardPos.y;
@@ -59,8 +59,8 @@ class RecruitSystem extends GameSystem
 				});
 				// .removeComponent(f.demandEntity("shadowRecruit"), Invisible);
 
-			// Mark Researcher component as "deployed"
-			var worker = recruitEnt.get(Researcher);
+			// Mark Worker component as "deployed"
+			var worker = recruitEnt.get(Worker);
 			worker.x = intent.x;
 			worker.y = intent.y;
 
@@ -78,28 +78,28 @@ class RecruitSystem extends GameSystem
 				throw "Knowledge dropped below 0!";
 		#end
 
-		var researcher = f.demandEntity("nextRecruit").get(Researcher);
-		setStatus('Click on space to deploy ${researcher.name}');
+		var worker = f.demandEntity("nextRecruit").get(Worker);
+		setStatus('Click on space to deploy ${worker.name}');
 		f.removeMarker("recruiting");
 		f.newMarker("place-recruit");
 
-		setRecruitmentMessage(knowledge.amount >= 10 ? "Hiring researcher": EARN_KNOWLEDGE);
+		setRecruitmentMessage(knowledge.amount >= 10 ? "Hiring worker": EARN_KNOWLEDGE);
 	}
 
 	// Updated the status bar, after placing a researcher, or aborting placement
 	public function onRecruitEvent(knowledge:Knowledge)
 	{
-		var msg = "Remember you can click on a researcher to rotate them";
+		var msg = "Remember you can click on a worker to rotate them";
 		if(knowledge.amount >= 10)
 		{
 			if(f.hasMarker("gameStart"))
 				msg = "Recruit another researcher";
-			else msg = "Another researcher is available";
+			else msg = "Another  is available";
 		}
 		setStatus(msg);
 
-		var researcher = f.getComponent("nextRecruit", Researcher);
-		setRecruitmentMessage(researcher == null ? EARN_KNOWLEDGE : researcher.name);
+		var worker = f.getComponent("nextRecruit", Worker);
+		setRecruitmentMessage(worker == null ? EARN_KNOWLEDGE : worker.name);
 	}
 
 	public function updatePlacement(knowledge:Knowledge)
@@ -139,12 +139,12 @@ class RecruitSystem extends GameSystem
 			// f.demandEntity("shadowRecruit")
 			// 	.add(Invisible.instance);
 
-			// Show next researcher
-			var researcher = new Researcher(Naming.getResearcherName(), Worker);
-			f.newSetSingleton("researcher", "nextRecruit")
+			// Show next worker
+			var worker = new Worker(Naming.getWorkerName(), Researcher);
+			f.newSetSingleton("worker", "nextRecruit")
 				.add(new Image("art/researcher.png"))
-				.add(researcher);
-			setRecruitmentMessage(researcher.name);
+				.add(worker);
+			setRecruitmentMessage(worker.name);
 		}
 	}
 

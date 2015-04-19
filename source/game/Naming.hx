@@ -13,7 +13,7 @@ class Naming
 		return StringUtil.toInitCase(result);		
 	}
 
-	public static function getResearcherName(): String
+	public static function getWorkerName(): String
 	{
 		var result = resolve("researcher");
 		return StringUtil.toInitCase(result);		

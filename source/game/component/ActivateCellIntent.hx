@@ -1,6 +1,6 @@
 package game.component;
 
-class RotateWorkerIntent
+class ActivateCellIntent
 {
 	public var x:Float;
 	public var y:Float;
