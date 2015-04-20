@@ -32,15 +32,11 @@ class RecruitSystem extends GameSystem
 	override public function update(ms:Float)
 	{
 		var knowledge:Knowledge;
+
 		for(node in f.ash.getNodeList(KnowledgeNode))
 		{
 			knowledge = node.knowledge;
-			if(f.hasMarker("recruiting"))
-				recruitNow(node.knowledge);
-			if(f.hasMarker("place-recruit"))
-				updatePlacement(node.knowledge);
-			else
-				checkKnowledge(node.knowledge);
+			break;
 		}
 
 		// Clicked on an empty space while holding a worker
@@ -77,6 +73,13 @@ class RecruitSystem extends GameSystem
 			f.removeMarker("place-recruit");
 			onDeployWorker(intent, knowledge);
 		}
+
+		if(f.hasMarker("recruiting"))
+			recruitNow(knowledge);
+		if(f.hasMarker("place-recruit"))
+			updatePlacement(knowledge);
+		else
+			checkKnowledge(knowledge);
 	}
 
 	public function onDeployWorker(intent:PlaceRecruitIntent, knowledge:Knowledge)
@@ -98,13 +101,6 @@ class RecruitSystem extends GameSystem
 		var worker = recruitEnt.get(Worker);
 		worker.x = intent.x;
 		worker.y = intent.y;
-
-
-		// THIS IS FIGHTING WITH setStatus elsewhere in this file
-		if(knowledge.amount < 0)
-			setStatus("Click on an empty space to place research there");
-
-		// TODO auto rotate to face some research	
 	}
 
 	// Recruit button clicked on
@@ -128,17 +124,25 @@ class RecruitSystem extends GameSystem
 	// Updated the status bar, after placing a researcher, or aborting placement
 	public function onRecruitEvent(knowledge:Knowledge)
 	{
-		var msg = "Remember you can click on a worker to rotate them";
+		var worker = f.getComponent("nextRecruit", Worker);
+		setRecruitmentMessage(worker == null ? EARN_KNOWLEDGE : worker.name);
+
+		var msg = "Place research next to your workers";
 		if(knowledge.amount >= 10)
 		{
 			if(f.hasMarker("gameStart"))
 				msg = "Recruit another researcher";
 			else msg = "Another researcher is available";
 		}
-		setStatus(msg);
 
-		var worker = f.getComponent("nextRecruit", Worker);
-		setRecruitmentMessage(worker == null ? EARN_KNOWLEDGE : worker.name);
+		else if(f.hasMarker("gameStart"))
+		{
+			f.newMarker("playing");		
+			f.removeMarker("gameStart");
+			msg = "GO GO GO! Click on empty spaces to place research!";
+		}
+
+		setStatus(msg);
 	}
 
 	public function updatePlacement(knowledge:Knowledge)

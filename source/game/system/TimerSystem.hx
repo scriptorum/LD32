@@ -16,7 +16,7 @@ class TimerSystem extends GameSystem
 
 	override public function update(ms:Float)
 	{
-		if(f.hasMarker("gameStart") || !f.hasMarker("player"))
+		if(!f.hasMarker("playing"))
 			return;
 			
 		for(node in f.ash.getNodeList(TimerNode))

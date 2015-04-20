@@ -1,26 +1,21 @@
 /*
  KNOWN:
- 	- There's some order of events that causes a worker to not complete its return when aborted and therefore
- 	  the player is stiffed 10 knowledge.
  	- How do I track the research pool again?
- 	    a) When a research box is complete it turns into a box. Click on the box to move it to a demand
- 	       card. The necessary amounts are used by the card, and if there's any excess they go to the knowledge meter.
+ 	    a) When a research box is complete it turns into a box. Click on the box to send it to the leftmost demand card
+ 	       that needs it. The necessary amounts are used by the card, and if there's any excess they go to the
+ 	       knowledge meter.
  	- How do I do promotions again?
  	    a) Workers should auto-promote after X research
  	    b) Promote button should be available after 5 knowledge
  	    c) Promote cost is relative to level of researcher
- 	- You shouldn't be able to place a researcher on an existing worker. 
- 		a) detect space is not empty and reject placement
- 		b) disallow recruit button if no empty spaces are available
- 	- Q: Isn't this space too big?
- 	  A: Yes, thanks for fucking noticing. Insert some cubicles or lab equipment or something to act as blocks.
-	- Random luck: A worker may quit after a time?
+ 	- Random luck: A worker may quit after a time?
 	- I'm concerned that the current scheme of letting you choose where to put a block may be too generous.
 	  Perhaps you need to place or move a dolly to and blocks are placed automatically. This could create
 	  another consequence by having unplaced research destroyed, either dinging the timer, or leaving
 	  a stack of papers which permanently blocks the board, or can only be removed by assigning workers to 
 	  it "busy work."
 	 - It's possible to recruit workers who are then unclickable
+	 - If you recruit while the prior worker is still tweening, the new recruit sticks and disappears.
 */
 
 
@@ -189,7 +184,6 @@ class PlayHandler extends FlaxenHandler
 			.add(new Text("Go Go Go Go!"));
 
 		f.newMarker("gameStart"); // should pause timer for now
-		f.newMarker("playing");		
 	}
 
 	override public function update(_)

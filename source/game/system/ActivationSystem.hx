@@ -24,6 +24,9 @@ class ActivationSystem extends GameSystem
 
 	override public function update(ms:Float)
 	{
+		if(f.hasMarker("gameStart"))
+			return;
+			
 		for(node in f.ash.getNodeList(ActivateCellNode))
 		{
 			// You clicked on the board, possibly on a worker

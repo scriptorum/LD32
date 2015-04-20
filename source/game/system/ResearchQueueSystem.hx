@@ -28,7 +28,7 @@ class ResearchQueueSystem extends GameSystem
 
 	override public function update(ms:Float)
 	{		
-		if(!f.hasMarker("playing"))  // TODO Only operate during Play and Setup
+		if(!f.hasMarker("playing") && !f.hasMarker("gameStart"))
 			return;
 
 		var queue:Array<String> = getResearchQueue();
