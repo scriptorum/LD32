@@ -2,9 +2,9 @@ package game.component;
 
 class Knowledge
 {
-	public var amount:Int;
+	public var amount:Float;
 
-	public function new(amount:Int)
+	public function new(amount:Float)
 	{
 		this.amount = amount;
 	}

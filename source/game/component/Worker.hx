@@ -9,6 +9,7 @@ class Worker
 	public var rotation:Int; // 0-3
 	public var level:Int = 1;
 	public var research:Research = null;
+	public var busy:Bool = false;
 
 	public function new(name:String, type:WorkerType)
 	{

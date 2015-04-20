@@ -1,16 +1,21 @@
+// Shared parent system
 package game.system;
 
 import flaxen.common.Easing;
+import flaxen.component.ActionQueue;
 import flaxen.component.Rotation;
 import flaxen.component.Text;
 import ash.core.Entity;
+import flaxen.component.Tween;
 import flaxen.core.Flaxen;
 import flaxen.core.FlaxenSystem;
 import flaxen.util.ArrayUtil;
 import game.component.Research;
 import game.component.ResearchQueue;
 import game.component.StatusBar;
+import game.component.DemandQueue;
 import game.component.Worker;
+import game.component.Knowledge;
 import game.node.KnowledgeNode;
 import game.node.ResearchNode;
 
@@ -31,9 +36,21 @@ class GameSystem extends FlaxenSystem
 		f.demandEntity("recruitMessage").get(Text).message = message;
 	}
 
+	public function getKnowledge(): Knowledge
+	{
+		for(node in f.ash.getNodeList(KnowledgeNode))
+			return node.knowledge;
+		return null;
+	}
+
 	public function getResearchQueue(): Array<String>
 	{
 		return f.demandComponent("researchQueue", ResearchQueue).queue;	
+	}
+
+	public function getDemandQueue(): Array<String>
+	{
+		return f.demandComponent("demandQueue", DemandQueue).queue;	
 	}
 
 	public function findNeighboringResearch(worker:Worker): Research
@@ -61,6 +78,7 @@ class GameSystem extends FlaxenSystem
 
 	public function alignWorker(e:Entity, worker:Worker)
 	{
+		worker.busy = true;
 		var rotation = e.get(Rotation);
 		var target = worker.rotation * 90;
 		var current = rotation.angle;
@@ -71,16 +89,15 @@ class GameSystem extends FlaxenSystem
 		else if (current == 270 && target == 0)
 			target = 360;
 
-		var tweenName = e.name + "_alignWorker";
-
 		// Rotate worker
-		if(f.entityExists(tweenName))
-			f.removeEntity(tweenName);
-		var tween = f.newTween(rotation, { angle:target }, 0.5, Easing.easeInQuad, null, true, tweenName);
-
+		var tween = new Tween(rotation, { angle:target }, 0.5, Easing.easeInQuad);
+		var aq = new ActionQueue().waitForProperty(tween, "complete", true);
 		if(actualTarget != target)
-			f.newActionQueue()
-				.waitForProperty(tween, "complete", true)
-				.setProperty(rotation, "angle", actualTarget);
+			aq.setProperty(rotation, "angle", actualTarget);
+		aq.setProperty(worker, "busy", false);
+		aq.destroyEntity = true;
+
+		// Ensure there is only one aq/tween going on for this worker, replace components
+		f.resolveEntity(e.name + "_alignWorker").add(tween).add(aq);
 	}
 }

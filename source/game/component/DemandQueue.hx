@@ -3,10 +3,10 @@ package game.component;
 class DemandQueue
 {
 	// Entity names of all the demands
-	public var demands:Array<String>;
+	public var queue:Array<String>;
 
 	public function new()
 	{
-		this.demands = new Array<String>();
+		this.queue = new Array<String>();
 	}
 }

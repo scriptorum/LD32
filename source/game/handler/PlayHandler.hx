@@ -14,8 +14,7 @@
 	  another consequence by having unplaced research destroyed, either dinging the timer, or leaving
 	  a stack of papers which permanently blocks the board, or can only be removed by assigning workers to 
 	  it "busy work."
-	 - It's possible to recruit workers who are then unclickable
-	 - If you recruit while the prior worker is still tweening, the new recruit sticks and disappears.
+	 - If you recruit while the prior worker is still tweening, the new recruit sticks and/or disappears.
 */
 
 
@@ -101,7 +100,7 @@ class PlayHandler extends FlaxenHandler
 			.addSet(midLayer)
 			.add(Origin.center())
 			.addClass(Rotation, [0])
-			.addClass(Position, [28, 136]);
+			.addClass(Position, [28, 130]);
 
 		f.newComponentSet("research") // needs image and research, also shadow
 			.add(Origin.center())
@@ -109,6 +108,12 @@ class PlayHandler extends FlaxenHandler
 			.addClass(Position, [-55, 230])
 			.addClass(Scale, [0.5, 0.5])
 			.add(backLayer);
+
+		f.newComponentSet("bookfont")
+			.addSet(midLayer)
+			.addClass(Text, ["0"])
+			.add(new Image("art/font-book.png"))
+			.add(TextStyle.createBitmap(false, Center, Center, 0, 0, 0, "0", false, "0123456789"));
 	}
 
 	private function initSystems()
@@ -151,17 +156,21 @@ class PlayHandler extends FlaxenHandler
 		f.newSingleton("demandQueue").add(new DemandQueue());
 		f.newSingleton("researchQueue").add(new ResearchQueue());
 
-
 		// Knowledge meter
 		f.newSetSingleton("backLayer", "book")
 			.add(new Image("art/book.png"))
 			.add(new Position(22, 38));
-		f.newSetSingleton("midLayer", "knowledge")
-			.add(new Text("000"))
+		f.newSetSingleton("bookfont", "knowledge")
 			.add(new Knowledge(30))
-			.add(new Image("art/font-book.png"))
-			.add(TextStyle.createBitmap(false, Center, Center, 0, 0, 0, "0", false, "0123456789"))
 			.add(new Position(60, 57));
+
+		// Research Difficulty Level
+		f.newSetSingleton("backLayer", "atom")
+			.add(new Image("art/atom.png"))
+			.add(new Position(65, 269));
+		f.newSetSingleton("bookfont", "difficulty")
+			// .add(new Difficulty(1))
+			.add(new Position(88, 292));
 
 		// Add recruit
 		f.newSetSingleton("worker", "shadowRecruit")
@@ -214,7 +223,7 @@ class PlayHandler extends FlaxenHandler
 			else f.newMarker("abort");
 		}
 
-		else if(f.isPressed("button-recruit"))
+		else if(f.isPressed("button-recruit") || (f.hasMarker("recruitEnabled") && key == Key.R))
 			f.newMarker("recruiting");
 
 		else if(InputService.clicked)

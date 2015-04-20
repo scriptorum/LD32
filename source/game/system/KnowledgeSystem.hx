@@ -20,7 +20,7 @@ class KnowledgeSystem extends GameSystem
 		for(node in f.ash.getNodeList(KnowledgeNode))
 		{
 			// Update visual knowledge
-			node.text.message = Std.string(node.knowledge.amount);
+			node.text.message = Std.string(Std.int(Math.floor(node.knowledge.amount)));
 		}
 	}
 }

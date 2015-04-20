@@ -26,7 +26,7 @@ class ActivationSystem extends GameSystem
 	{
 		if(f.hasMarker("gameStart"))
 			return;
-			
+
 		for(node in f.ash.getNodeList(ActivateCellNode))
 		{
 			// You clicked on the board, possibly on a worker
@@ -104,6 +104,7 @@ class ActivationSystem extends GameSystem
 			worker.rotation = 0;
 		worker.research = null;
 		alignWorker(workerNode.entity, worker);
+		setStatus('${worker.name} is chair-spinning');
 	}
 }
 

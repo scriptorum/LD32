@@ -1,3 +1,7 @@
+/*
+This class is a little hard to follow, possibly because of inconsistent practices. 
+*/
+
 package game.system;
 
 import ash.core.Entity;
@@ -18,7 +22,6 @@ import game.component.PlaceRecruitIntent;
 import game.component.Worker;
 import game.component.StatusBar;
 import game.Naming;
-import game.node.KnowledgeNode;
 
 class RecruitSystem extends GameSystem
 {
@@ -31,13 +34,7 @@ class RecruitSystem extends GameSystem
 
 	override public function update(ms:Float)
 	{
-		var knowledge:Knowledge;
-
-		for(node in f.ash.getNodeList(KnowledgeNode))
-		{
-			knowledge = node.knowledge;
-			break;
-		}
+		var knowledge:Knowledge = getKnowledge();
 
 		// Clicked on an empty space while holding a worker
 		for(node in f.ash.getNodeList(PlaceRecruitIntentNode))
@@ -196,6 +193,9 @@ class RecruitSystem extends GameSystem
 		var but = f.demandEntity("button-recruit");
 		var alpha = but.get(Alpha);
 		alpha.value = (enabled ? 1.0 : 0.5);
+		if(enabled)
+			f.newMarker("recruitEnabled");
+		else f.removeMarker("recruitEnabled");
 	}
 }
 
