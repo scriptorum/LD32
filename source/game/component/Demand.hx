@@ -3,16 +3,15 @@ package game.component;
 class Demand
 {
 	public var name:String; // not necessarily unique descriptor
-	public var id:Int; // unique numbered identifier
+	public var holder:String; // name of holding entity
 	public var red:Float;
 	public var green:Float;
 	public var blue:Float;
 	public var completed:Bool = false;
 
-	public function new(name:String, id:Int, red:Float, green:Float, blue:Float)
+	public function new(name:String, red:Float, green:Float, blue:Float)
 	{
 		this.name = name;
-		this.id = id;
 		this.red = red;
 		this.green = green;
 		this.blue = blue;

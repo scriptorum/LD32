@@ -4,8 +4,6 @@ import flaxen.util.ArrayUtil;
 
 class Research
 {
-	public static var uniqueId:Int = 0;
-	public var id:Int;
 	public var queued:Bool = true;
 	public var complete:Bool = false;
 	public var type:String;
@@ -16,7 +14,6 @@ class Research
 
 	public function new(type:String)
 	{
-		this.id = uniqueId++;
 		this.type = type;
 	}
 
