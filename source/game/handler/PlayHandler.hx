@@ -38,6 +38,7 @@ import flaxen.core.FlaxenHandler;
 import flaxen.core.Log;
 import flaxen.service.InputService;
 import game.component.DemandQueue;
+import game.component.Progress;
 import game.component.ResearchQueue;
 import game.component.Knowledge;
 import game.component.PlaceRecruitIntent;
@@ -119,12 +120,13 @@ class PlayHandler extends FlaxenHandler
 	private function initSystems()
 	{
 		f.addSystem(new game.system.RecruitSystem(f));
-		f.addSystem(new game.system.KnowledgeSystem(f));
 		f.addSystem(new game.system.ActivationSystem(f));
 		f.addSystem(new game.system.ResearchQueueSystem(f));
 		f.addSystem(new game.system.DemandSystem(f));
 		f.addSystem(new game.system.TimerSystem(f));
 		f.addSystem(new game.system.WorkSystem(f));
+		f.addSystem(new game.system.KnowledgeSystem(f));
+		f.addSystem(new game.system.ProgressSystem(f));
 		f.addSystem(new game.system.StatusBarSystem(f));
 	}
 
@@ -164,12 +166,12 @@ class PlayHandler extends FlaxenHandler
 			.add(new Knowledge(30))
 			.add(new Position(60, 57));
 
-		// Research Difficulty Level
+		// Progress Level
 		f.newSetSingleton("backLayer", "atom")
 			.add(new Image("art/atom.png"))
 			.add(new Position(65, 269));
-		f.newSetSingleton("bookfont", "difficulty")
-			// .add(new Difficulty(1))
+		f.newSetSingleton("bookfont", "progress")
+			.add(new Progress(0))
 			.add(new Position(88, 292));
 
 		// Add recruit
@@ -225,6 +227,14 @@ class PlayHandler extends FlaxenHandler
 
 		else if(f.isPressed("button-recruit") || (f.hasMarker("recruitEnabled") && key == Key.R))
 			f.newMarker("recruiting");
+
+		else if(key == Key.X)
+		{
+			trace("Pulling demand.");
+			var q = f.demandComponent("demandQueue", DemandQueue).queue;
+			var d = f.demandComponent(q[0], game.component.Demand);
+			d.red = d.blue = d.green = 0;
+		}
 
 		else if(InputService.clicked)
 		{

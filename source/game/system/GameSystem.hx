@@ -10,6 +10,7 @@ import flaxen.component.Tween;
 import flaxen.core.Flaxen;
 import flaxen.core.FlaxenSystem;
 import flaxen.util.ArrayUtil;
+import game.component.Progress;
 import game.component.Research;
 import game.component.ResearchQueue;
 import game.component.StatusBar;
@@ -41,6 +42,11 @@ class GameSystem extends FlaxenSystem
 		for(node in f.ash.getNodeList(KnowledgeNode))
 			return node.knowledge;
 		return null;
+	}
+
+	public function getProgress(): Progress
+	{
+		return f.demandComponent("progress", Progress);
 	}
 
 	public function getResearchQueue(): Array<String>

@@ -73,6 +73,19 @@ class Naming
 			"essence"
 		],
 
+		animal: [
+			"puppy",
+			"lemur",
+			"kitten",
+			"mouse",
+			"squirrel",
+			"rhinoceros",
+			"monkey",
+			"dog",
+			"cat",
+			"snake"
+		],
+
 		good: [
 			"chair",
 			"sofa",
@@ -99,6 +112,7 @@ class Naming
 		item: [
 			"[good]",
 			"[asset]",
+			"[animal]",
 			"[food]"
 		],
 
@@ -111,21 +125,20 @@ class Naming
 			"[element]-filled", 
 			"[element]-breathing", 
 			"[element]-spitting", 
-			"[element]-forming", 
+			"[element]-loving", 
 			"acidic", 
 			"flammable", 
 			"burning", 
 			"sabotaged", 
-			"biting", 
 			"suicidal", 
 			"self-aware", 
 			"burning", 
 			"exploding", 
-			"melting", 
+			"disintegrating", 
 			"vaporizing", 
 			"flying", 
 			"blasting", 
-			"biting", 
+			"peckish", 
 			"[food]-spitting", 
 			"[food]-filled"
 		],

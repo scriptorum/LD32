@@ -23,8 +23,6 @@ import game.Naming;
 
 class DemandSystem extends GameSystem
 {
-	public var demandsCompleted:Int = 0;
-
 	public function new(f:Flaxen)
 	{
 		super(f);
@@ -48,7 +46,7 @@ class DemandSystem extends GameSystem
 	public function addDemand(ordinal:Int): Entity
 	{
 		// Create demand
-		var total:Int = Math.ceil(demandsCompleted/5 + 1);
+		var total:Int = Math.ceil(getProgress().value / 5 + 1);
 		var distrib:Array<Int> = getDistrib(total);
 		var demand = new Demand(Naming.getWeaponName(), distrib[0], distrib[1], distrib[2]);
 
@@ -74,6 +72,8 @@ class DemandSystem extends GameSystem
 		addResearchIcon(demandEnt, "red", distrib[0], [pos, scale], [new Offset(x, y)], [new Offset(tx, ty)]);  
 		addResearchIcon(demandEnt, "green", distrib[1], [pos, scale], [new Offset(x+41, y)], [new Offset(tx+41, ty)]);
 		addResearchIcon(demandEnt, "blue", distrib[2], [pos, scale], [new Offset(x+82, y)], [new Offset(tx+82, ty)]);
+
+		trace('New demand ${demandEnt.name} total:$total progress:${getProgress().value} distrib:$distrib name:${demand.name}');
 
 		// Move card into position 
 		moveDemandToPosition(demandEnt, ordinal);
@@ -124,9 +124,23 @@ class DemandSystem extends GameSystem
 
 	public function getDistrib(total:Int): Array<Int>
 	{
-		var r = MathUtil.rndInt(0,total);
-		var g = MathUtil.rndInt(0,total - r);
-		var b = total - r - g;
+		if(total > 27)
+			return [9, 9, 9];
+		else if(total < 1)
+			throw 'Unexpected distribution total: $total';
+
+		var max = (total > 9 ? 9 : total);
+		var min = (total > 18 ? total - 18 : 0);
+		var r = MathUtil.rndInt(min, max);
+		total -= r;
+
+		max = (total > 9 ? 9 : total);
+		min = (total > 9 ? total - 9 : 0);
+		var g = MathUtil.rndInt(min, max);
+		total -= g;
+
+		var b = (total > 9 ? 9 : total);
+
 		return [r, g, b];
 	}
 
@@ -139,10 +153,8 @@ class DemandSystem extends GameSystem
 			// Check for demand completed
 			if(d.red + d.green + d.blue <= 0)
 			{
-				trace('Completed ${node.entity.name}: ${d.name}');
 				setStatus('You\'ve invented ${d.name}!');
 				removeDemand(d);
-				demandsCompleted++;
 				// TODO Effects
 				continue;
 			}
@@ -159,7 +171,6 @@ class DemandSystem extends GameSystem
 				var actual:Int = Std.int(Math.ceil(d.getValueFor(type)));
 				if(current != actual)
 				{
-					trace('Updating icon number. Actual:$actual current:$current name:${ent.name}');
 					if(actual == 0) // destroy research icon
 					{						
 						f.removeEntity(node.entity.name + "-icon-" + type); // remove flask
@@ -195,7 +206,8 @@ class DemandSystem extends GameSystem
 		f.newTween(e.get(Scale), { x:0.1, y:0.1 }, speed);
 		f.newActionQueue()
 			.delay(speed)
-			.removeEntity(f.ash, e);
+			.removeEntity(f.ash, e)
+			.addCallback(function() { getProgress().value++; });
 
 		// Slide right most cards to the left
 		for(i in pos...demands.length)

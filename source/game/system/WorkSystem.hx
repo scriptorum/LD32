@@ -67,7 +67,6 @@ class WorkSystem extends GameSystem
 			var target = r.level;
 			if(r.amount >= target)
 			{
-				trace('Completed work activity ${r.type} amount:${r.amount} target:$target');
 				// Apply research to leftmost demand that needs it
 				var excess = r.amount;
 				for(demandName in getDemandQueue())
@@ -79,7 +78,6 @@ class WorkSystem extends GameSystem
 						var newVal = (excess > val ? 0 : val - excess); // compete demand step or reduce it?
 						excess = (excess > val ? excess - val : 0); // leave excess or consume all research?
 						demand.setValueFor(r.type, newVal);
-						trace('		Excess:$excess remainingDemand:$newVal');
 						// TODO FX
 						break;
 					}
