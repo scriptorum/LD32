@@ -14,7 +14,6 @@
 	  another consequence by having unplaced research destroyed, either dinging the timer, or leaving
 	  a stack of papers which permanently blocks the board, or can only be removed by assigning workers to 
 	  it "busy work."
-	 - If you recruit while the prior worker is still tweening, the new recruit sticks and/or disappears.
 */
 
 
@@ -206,11 +205,12 @@ class PlayHandler extends FlaxenHandler
 		{
 			trace("Dumping log(s)");
 			flaxen.util.LogUtil.dumpLog(f, Sys.getCwd() + "entities.txt");
+
 			// trace("Component Sets:");
 			// for(setName in f.getComponentSetKeys())
 			// 	trace(setName + ":{" + f.getComponentSet(setName) + "}");
 
-			trace(flaxen.util.LogUtil.dumpHaxePunk());
+			// trace(flaxen.util.LogUtil.dumpHaxePunk());
 		}
 		#end
 

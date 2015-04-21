@@ -87,12 +87,7 @@ class RecruitSystem extends GameSystem
 		onRecruitEvent(knowledge);
 		var x = intent.x * 55 + boardPos.x;
 		var y = intent.y * 55 + boardPos.y;
-		var tween = f.newTween(recruitEnt.get(Position), { x:x, y:y }, 0.6, Easing.easeOutQuad);
-		f.newActionQueue()
-			.waitForProperty(tween, "complete", true)
-			.addCallback(function() { 
-				f.removeMarker("place-recruit");
-			});
+		f.newTween(recruitEnt.get(Position), { x:x, y:y }, .4, Easing.easeOutQuad);
 
 		// Mark Worker component as "deployed"
 		var worker = recruitEnt.get(Worker);

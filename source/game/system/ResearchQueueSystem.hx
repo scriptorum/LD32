@@ -60,7 +60,7 @@ class ResearchQueueSystem extends GameSystem
 	{
 		if(flask > 2)
 			throw 'Cannot tween to flask $flask';
-		var speed = 0.4;
+		var speed = 0.2;
 		var data = flaskData[flask];
 		var aq = e.get(ActionQueue);
 		var tween:Tween = null;

@@ -73,8 +73,6 @@ class DemandSystem extends GameSystem
 		addResearchIcon(demandEnt, "green", distrib[1], [pos, scale], [new Offset(x+41, y)], [new Offset(tx+41, ty)]);
 		addResearchIcon(demandEnt, "blue", distrib[2], [pos, scale], [new Offset(x+82, y)], [new Offset(tx+82, ty)]);
 
-		trace('New demand ${demandEnt.name} total:$total progress:${getProgress().value} distrib:$distrib name:${demand.name}');
-
 		// Move card into position 
 		moveDemandToPosition(demandEnt, ordinal);
 
