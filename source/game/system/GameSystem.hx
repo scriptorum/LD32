@@ -22,9 +22,18 @@ import game.node.ResearchNode;
 
 class GameSystem extends FlaxenSystem
 {
+	public static inline var PROGRESS_PER_LEVEL:Int = 5;
+
 	public function new(f:Flaxen)
 	{
 		super(f);
+	}
+
+	public function getLevel(?progress:Int): Int
+	{
+		if(progress == null) progress = getProgress().value;
+		var level:Float = progress / 5 + 1;
+		return Std.int(Math.floor(level));
 	}
 
 	public function setStatus(message:String)

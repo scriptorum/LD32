@@ -46,7 +46,7 @@ class DemandSystem extends GameSystem
 	public function addDemand(ordinal:Int): Entity
 	{
 		// Create demand
-		var total:Int = Math.ceil(getProgress().value / 5 + 1);
+		var total:Int = Math.ceil(getLevel(getProgress().value));
 		var distrib:Array<Int> = getDistrib(total);
 		var demand = new Demand(Naming.getWeaponName(), distrib[0], distrib[1], distrib[2]);
 

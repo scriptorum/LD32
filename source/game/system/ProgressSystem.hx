@@ -20,7 +20,7 @@ class ProgressSystem extends GameSystem
 		for(node in f.ash.getNodeList(ProgressNode))
 		{
 			// Update visual progress
-			node.text.message = Std.string(node.progress.value);
+			node.text.message = Std.string(getLevel(node.progress.value));
 		}
 	}
 }

@@ -40,6 +40,7 @@ class ResearchQueueSystem extends GameSystem
 	public function addResearch(queue:Array<String>)
 	{
 		var research = Research.random();
+		research.level = getLevel();
 
 		var e1 = f.newSetEntity("research", "research")
 			.add(new Image('art/research-${research.type}.png'))
