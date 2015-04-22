@@ -42,17 +42,17 @@ class ResearchQueueSystem extends GameSystem
 		var research = Research.random();
 		research.level = getLevel();
 
-		var e1 = f.newSetEntity("research", "research")
+		var e1 = f.newSetEntity("research", "research#")
 			.add(new Image('art/research-${research.type}.png'))
 			.add(research)
-			.add(new ActionQueue());
+			.add(new ActionQueue(f));
 		queue.unshift(e1.name);
 		tweenToFlask(e1, 0);
 	
 		// If other flasks ahead in queue, push them to next flask position	
 		if(queue.length > 1) for(i in 1...queue.length)
 		{
-			var flaskEnt = f.demandEntity(queue[i]);
+			var flaskEnt = f.getEntity(queue[i]);
 			tweenToFlask(flaskEnt, i);
 		}
 	}
@@ -65,7 +65,7 @@ class ResearchQueueSystem extends GameSystem
 		var data = flaskData[flask];
 		var aq = e.get(ActionQueue);
 		var tween:Tween = null;
-		aq.addCallback(function()
+		aq.call(function()
 		{
 			tween = f.newTween(e.get(Position), { x:data.x, y:data.y }, speed);
 			f.newTween(e.get(Scale), { x:data.scale, y:data.scale }, speed);

@@ -35,7 +35,7 @@ class StatusBarSystem extends GameSystem
 				var msg = null;
 
 				// Check for timer, offer warning
-				var timer = f.demandEntity("timer").get(Timer);
+				var timer = f.getEntity("timer").get(Timer);
 				if(timer.value < 8)
 					msg = "Hurry up!";
 

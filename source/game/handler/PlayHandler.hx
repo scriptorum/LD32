@@ -137,7 +137,7 @@ class PlayHandler extends FlaxenHandler
 			.add(Position.zero());
 
 		// Board
-		f.newSetSingleton("backLayer", "board")
+		f.newSetEntity("backLayer", "board")
 			.add(new Image("art/board.png"))
 			.add(new Position(120, 20));
 
@@ -147,46 +147,46 @@ class PlayHandler extends FlaxenHandler
 			{text:"2", x:50, id:"timer-min" }, 
 			{text:"00", x:100, id:"timer-sec" },
 			{text:":", x:71, id:"timer-colon"} ])
-				f.newSetSingleton("timer", val.id)
+				f.newSetEntity("timer", val.id)
 					.add(new Text(val.text))
 					.add(new Position(val.x, 540));
-		f.newSingleton("timer")
+		f.newEntity("timer")
 			.add(new Timer(120));
 
 		// Queues
-		f.newSingleton("demandQueue").add(new DemandQueue());
-		f.newSingleton("researchQueue").add(new ResearchQueue());
+		f.newEntity("demandQueue").add(new DemandQueue());
+		f.newEntity("researchQueue").add(new ResearchQueue());
 
 		// Knowledge meter
-		f.newSetSingleton("backLayer", "book")
+		f.newSetEntity("backLayer", "book")
 			.add(new Image("art/book.png"))
 			.add(new Position(22, 38));
-		f.newSetSingleton("bookfont", "knowledge")
+		f.newSetEntity("bookfont", "knowledge")
 			.add(new Knowledge(30))
 			.add(new Position(60, 57));
 
 		// Progress Level
-		f.newSetSingleton("backLayer", "atom")
+		f.newSetEntity("backLayer", "atom")
 			.add(new Image("art/atom.png"))
 			.add(new Position(65, 269));
-		f.newSetSingleton("bookfont", "progress")
+		f.newSetEntity("bookfont", "progress")
 			.add(new Progress(0))
 			.add(new Position(88, 292));
 
 		// Add recruit
-		f.newSetSingleton("worker", "shadowRecruit")
+		f.newSetEntity("worker", "shadowRecruit")
 			.add(new Image("art/recruit-shadow.png"));
-		f.newSetSingleton("backLayer", "button-recruit")
+		f.newSetEntity("backLayer", "button-recruit")
 			.add(new Image("art/button-recruit.png"))
 			.add(new Alpha(0.5))
 			.add(new Position(17, 219));
-		f.newSetSingleton("message", "recruitMessage")
+		f.newSetEntity("message", "recruitMessage")
 			.add(new Position(60, 200))
 			.add(new Size(120, 36))
 			.add(new Text("Go Go Go Go!"));
 
 		// Add message bar
-		f.newSetSingleton("message", "statusBar")
+		f.newSetEntity("message", "statusBar")
 			.add(new Position(340, 475))
 			.add(new Size(440, 36))
 			.add(new Scale(1, 1))
@@ -215,7 +215,7 @@ class PlayHandler extends FlaxenHandler
 		#end
 
 		if(key == Key.C)
-			f.demandComponent("knowledge", Knowledge).amount += 5;
+			f.getComponent("knowledge", Knowledge).amount += 5;
 
 		if(f.hasMarker("place-recruit") && InputService.clicked)
 		{		
@@ -231,8 +231,8 @@ class PlayHandler extends FlaxenHandler
 		else if(key == Key.X)
 		{
 			trace("Pulling demand.");
-			var q = f.demandComponent("demandQueue", DemandQueue).queue;
-			var d = f.demandComponent(q[0], game.component.Demand);
+			var q = f.getComponent("demandQueue", DemandQueue).queue;
+			var d = f.getComponent(q[0], game.component.Demand);
 			d.red = d.blue = d.green = 0;
 		}
 

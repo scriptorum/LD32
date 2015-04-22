@@ -71,7 +71,7 @@ class WorkSystem extends GameSystem
 				var excess = r.amount;
 				for(demandName in getDemandQueue())
 				{
-					var demand = f.demandComponent(demandName, Demand);
+					var demand = f.getComponent(demandName, Demand);
 					var val = demand.getValueFor(r.type);
 					if(val > 0)
 					{

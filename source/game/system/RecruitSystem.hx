@@ -81,9 +81,9 @@ class RecruitSystem extends GameSystem
 
 	public function onDeployWorker(intent:PlaceRecruitIntent, knowledge:Knowledge)
 	{
-		var boardPos = f.demandEntity("board").get(Position);
-		var recruitEnt = f.demandEntity("nextRecruit");
-		recruitEnt.name = f.getEntityName("worker"); // They're no longer next recruit
+		var boardPos = f.getEntity("board").get(Position);
+		var recruitEnt = f.getEntity("nextRecruit");
+		recruitEnt.name = f.generateEntityName("worker#"); // They're no longer next recruit
 		onRecruitEvent(knowledge);
 		var x = intent.x * 55 + boardPos.x;
 		var y = intent.y * 55 + boardPos.y;
@@ -105,7 +105,7 @@ class RecruitSystem extends GameSystem
 				throw "Knowledge dropped below 0!";
 		#end
 
-		var worker = f.demandEntity("nextRecruit").get(Worker);
+		var worker = f.getEntity("nextRecruit").get(Worker);
 		setStatus('Click on space to deploy ${worker.name}');
 		f.removeMarker("recruiting");
 		f.newMarker("place-recruit");
@@ -116,7 +116,7 @@ class RecruitSystem extends GameSystem
 	// Updated the status bar, after placing a researcher, or aborting placement
 	public function onRecruitEvent(knowledge:Knowledge)
 	{
-		var worker = f.getComponent("nextRecruit", Worker);
+		var worker = f.getComponent("nextRecruit", Worker, false);
 		setRecruitmentMessage(worker == null ? EARN_KNOWLEDGE : worker.name);
 
 		var msg = "Place research next to your workers";
@@ -143,8 +143,8 @@ class RecruitSystem extends GameSystem
 		{
 			f.removeMarker("abort");
 			f.removeMarker("place-recruit");
-			var recruit = f.demandComponent("nextRecruit", Position);
-			var model = f.demandComponent("shadowRecruit", Position);
+			var recruit = f.getComponent("nextRecruit", Position);
+			var model = f.getComponent("shadowRecruit", Position);
 			f.newTween(recruit, {x:model.x, y:model.y}, 0.5);
 			knowledge.amount += 10; // return knowledge
 			onRecruitEvent(knowledge);
@@ -155,7 +155,10 @@ class RecruitSystem extends GameSystem
 
 	public function recruitFollowsMouse()
 	{
-		var e = f.demandEntity("nextRecruit");
+		var e = f.getEntity("nextRecruit", false);
+		if(e == null)
+			return;
+			
 		var pos = e.get(Position);
 		var image = e.get(Image);
 		pos.x = InputService.mouseX - image.width / 2;
@@ -167,16 +170,16 @@ class RecruitSystem extends GameSystem
 		if(knowledge.amount >= 10)
 		{
 			enableRecruitButton(true);
-			if(f.entityExists("nextRecruit"))
+			if(f.hasEntity("nextRecruit"))
 				return;
 
 			// // Hide shadow recruit
-			// f.demandEntity("shadowRecruit")
+			// f.getEntity("shadowRecruit")
 			// 	.add(Invisible.instance);
 
 			// Show next worker
 			var worker = new Worker(Naming.getWorkerName(), Researcher);
-			f.newSetSingleton("worker", "nextRecruit")
+			f.newSetEntity("worker", "nextRecruit")
 				.add(new Image("art/researcher.png"))
 				.add(worker);
 			setRecruitmentMessage(worker.name);
@@ -185,7 +188,7 @@ class RecruitSystem extends GameSystem
 
 	public function enableRecruitButton(enabled:Bool)
 	{
-		var but = f.demandEntity("button-recruit");
+		var but = f.getEntity("button-recruit");
 		var alpha = but.get(Alpha);
 		alpha.value = (enabled ? 1.0 : 0.5);
 		if(enabled)

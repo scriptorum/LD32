@@ -38,12 +38,12 @@ class GameSystem extends FlaxenSystem
 
 	public function setStatus(message:String)
 	{
-		f.demandEntity("statusBar").get(StatusBar).setMessage(message);
+		f.getEntity("statusBar").get(StatusBar).setMessage(message);
 	}
 
 	public function setRecruitmentMessage(message:String)
 	{
-		f.demandEntity("recruitMessage").get(Text).message = message;
+		f.getEntity("recruitMessage").get(Text).message = message;
 	}
 
 	public function getKnowledge(): Knowledge
@@ -55,17 +55,17 @@ class GameSystem extends FlaxenSystem
 
 	public function getProgress(): Progress
 	{
-		return f.demandComponent("progress", Progress);
+		return f.getComponent("progress", Progress);
 	}
 
 	public function getResearchQueue(): Array<String>
 	{
-		return f.demandComponent("researchQueue", ResearchQueue).queue;	
+		return f.getComponent("researchQueue", ResearchQueue).queue;	
 	}
 
 	public function getDemandQueue(): Array<String>
 	{
-		return f.demandComponent("demandQueue", DemandQueue).queue;	
+		return f.getComponent("demandQueue", DemandQueue).queue;	
 	}
 
 	public function findNeighboringResearch(worker:Worker): Research
@@ -106,7 +106,7 @@ class GameSystem extends FlaxenSystem
 
 		// Rotate worker
 		var tween = new Tween(rotation, { angle:target }, 0.5, Easing.easeInQuad);
-		var aq = new ActionQueue().waitForProperty(tween, "complete", true);
+		var aq = new ActionQueue(f).waitForProperty(tween, "complete", true);
 		if(actualTarget != target)
 			aq.setProperty(rotation, "angle", actualTarget);
 		aq.setProperty(worker, "busy", false);

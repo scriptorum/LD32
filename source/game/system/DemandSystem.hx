@@ -53,11 +53,11 @@ class DemandSystem extends GameSystem
 		// Create card, visual representation of demand
 		var pos = new Position(610, 495);
 		var scale = new Scale(0.1, 0.1);
-		var demandEnt = f.newSetEntity("demand", "demand").add(demand).add(pos).add(scale);
+		var demandEnt = f.newSetEntity("demand", "demand#").add(demand).add(pos).add(scale);
 		demand.holder = demandEnt.name;
 
 		// Add description to card 
-		var descEnt = f.newSetSingleton("frontLayer", demandEnt.name + "-description")
+		var descEnt = f.newSetEntity("frontLayer", demandEnt.name + "-description")
 			.add(new Image("art/font-card.png"))
 			.add(TextStyle.createBitmap(true, Left, Top))
 			.add(new Text(demand.name))
@@ -96,12 +96,12 @@ class DemandSystem extends GameSystem
 			return;
 
 		// Add research icon
-		var e1 = f.newSetSingleton("frontLayer", parent.name + "-icon-" + type)
+		var e1 = f.newSetEntity("frontLayer", parent.name + "-icon-" + type)
 			.add(new Image('art/research-$type.png'));
 		f.addDependent(parent, e1);
 
 		// Add text
-		var e2 = f.newSetSingleton("moreFrontLayer", parent.name + "-text-" + type)
+		var e2 = f.newSetEntity("moreFrontLayer", parent.name + "-text-" + type)
 			.add(new Image("art/font-digits-small.png"))
 			.add(new Text(Std.string(amount)))
 			.add(new Data(amount))
@@ -160,7 +160,7 @@ class DemandSystem extends GameSystem
 			// Check for demand closer to completion
 			for(type in ["red", "green", "blue"])
 			{
-				var ent = f.getEntity(node.entity.name + "-text-" + type);
+				var ent = f.getEntity(node.entity.name + "-text-" + type, false);
 				if(ent == null) 
 					continue;
 
@@ -171,7 +171,7 @@ class DemandSystem extends GameSystem
 				{
 					if(actual == 0) // destroy research icon
 					{						
-						f.removeEntity(node.entity.name + "-icon-" + type); // remove flask
+						f.removeNamedEntity(node.entity.name + "-icon-" + type); // remove flask
 						f.ash.removeEntity(ent); // remove flask text
 					}
 					else // update icon
@@ -198,14 +198,14 @@ class DemandSystem extends GameSystem
 
 		// Slide removed card to difficulty icon
 		var speed = 0.7;
-		var e = f.demandEntity(d.holder);
+		var e = f.getEntity(d.holder);
 		e.remove(Demand);
 		f.newTween(e.get(Position), { x:88, y:292 }, speed);
 		f.newTween(e.get(Scale), { x:0.1, y:0.1 }, speed);
 		f.newActionQueue()
-			.delay(speed)
-			.removeEntity(f.ash, e)
-			.addCallback(function() { getProgress().value++; });
+			.wait(speed)
+			.removeEntity(e)
+			.call(function() { getProgress().value++; });
 
 		// Slide right most cards to the left
 		for(i in pos...demands.length)

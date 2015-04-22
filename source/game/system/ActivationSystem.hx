@@ -78,7 +78,7 @@ class ActivationSystem extends GameSystem
 		}
 
 		// Move flask to board
-		var boardPos = f.demandComponent("board", Position);
+		var boardPos = f.getComponent("board", Position);
 		f.newTween(flaskEnt.get(Position), { x:intent.x * 55 + boardPos.x, y:intent.y * 55 + boardPos.y }, 0.4);
 		f.newTween(flaskEnt.get(Scale), { x:1, y:1 }, 0.4);
 		f.newTween(flaskEnt.get(Rotation), { angle: 0 }, 0.4);
