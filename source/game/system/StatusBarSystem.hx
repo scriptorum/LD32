@@ -6,7 +6,7 @@ import flaxen.common.Easing;
 import flaxen.common.LoopType;
 import flaxen.component.Scale;
 import flaxen.component.Text;
-import flaxen.core.Flaxen;
+import flaxen.Flaxen;
 import game.system.GameSystem;
 import flaxen.util.ArrayUtil;
 import game.component.StatusBar;

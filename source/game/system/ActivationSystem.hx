@@ -7,7 +7,7 @@ import flaxen.component.ActionQueue;
 import flaxen.component.Position;
 import flaxen.component.Rotation;
 import flaxen.component.Scale;
-import flaxen.core.Flaxen;
+import flaxen.Flaxen;
 import game.component.Research;
 import game.system.GameSystem;
 import game.node.WorkerNode;

@@ -13,7 +13,7 @@
     <assets path="assets/audio" rename="music" type="music" include="*.ogg" unless="flash"/>
     <assets path="assets/font" rename="font" type="font" include="*.ttf" unless="html5"/>
     <assets path="assets/font" rename="font" type="font" include="*.woff|*.svg" if="html5"/>
-    <assets path="assets/data" rename="data" type="text" include="*.xml|*.txt" exclude="*.bak"/>
+    <assets path="assets/data" rename="data" type="text" include="*.xml|*.txt|*.json" exclude="*.bak"/>
     <icon path="assets/art/icon.svg"/>  
 
     <section if="HaxePunkConsole">

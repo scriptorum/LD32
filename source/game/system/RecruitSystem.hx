@@ -12,7 +12,7 @@ import flaxen.component.Image;
 import flaxen.component.Invisible;
 import flaxen.component.Position;
 import flaxen.component.Text;
-import flaxen.core.Flaxen;
+import flaxen.Flaxen;
 import game.node.WorkerNode;
 import game.node.ResearchNode;
 import game.system.GameSystem;

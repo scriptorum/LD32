@@ -3,7 +3,7 @@ package game.system;
 import ash.core.Entity;
 import ash.core.Node;
 import flaxen.component.Text;
-import flaxen.core.Flaxen;
+import flaxen.Flaxen;
 import game.system.GameSystem;
 import game.component.Timer;
 

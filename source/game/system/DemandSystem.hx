@@ -14,7 +14,7 @@ import flaxen.component.Size;
 import flaxen.component.Text;
 import flaxen.common.TextAlign;
 import flaxen.component.Tween;
-import flaxen.core.Flaxen;
+import flaxen.Flaxen;
 import game.system.GameSystem;
 import flaxen.util.MathUtil;
 import game.component.Demand;
@@ -171,7 +171,7 @@ class DemandSystem extends GameSystem
 				{
 					if(actual == 0) // destroy research icon
 					{						
-						f.removeNamedEntity(node.entity.name + "-icon-" + type); // remove flask
+						f.removeEntity(node.entity.name + "-icon-" + type); // remove flask
 						f.ash.removeEntity(ent); // remove flask text
 					}
 					else // update icon

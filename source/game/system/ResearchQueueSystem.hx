@@ -11,7 +11,7 @@ import flaxen.component.Scale;
 import flaxen.component.Rotation;
 import flaxen.common.TextAlign;
 import flaxen.component.Tween;
-import flaxen.core.Flaxen;
+import flaxen.Flaxen;
 import game.system.GameSystem;
 import game.component.Research;
 import game.component.ResearchQueue;

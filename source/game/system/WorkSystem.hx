@@ -6,7 +6,7 @@ import game.component.Worker;
 import game.node.WorkerNode;
 import game.node.ResearchNode;
 import game.system.GameSystem;
-import flaxen.core.Flaxen;
+import flaxen.Flaxen;
 
 class WorkSystem extends GameSystem
 {

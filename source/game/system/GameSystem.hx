@@ -7,8 +7,8 @@ import flaxen.component.Rotation;
 import flaxen.component.Text;
 import ash.core.Entity;
 import flaxen.component.Tween;
-import flaxen.core.Flaxen;
-import flaxen.core.FlaxenSystem;
+import flaxen.Flaxen;
+import flaxen.FlaxenSystem;
 import flaxen.util.ArrayUtil;
 import game.component.Progress;
 import game.component.Research;
@@ -110,7 +110,7 @@ class GameSystem extends FlaxenSystem
 		if(actualTarget != target)
 			aq.setProperty(rotation, "angle", actualTarget);
 		aq.setProperty(worker, "busy", false);
-		aq.destroyEntity = true;
+		aq.onComplete = DestroyEntity;
 
 		// Ensure there is only one aq/tween going on for this worker, replace components
 		f.resolveEntity(e.name + "_alignWorker").add(tween).add(aq);
